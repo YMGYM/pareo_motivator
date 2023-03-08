@@ -1,5 +1,9 @@
 import * as vscode from 'vscode';
 
+type ImageSource = {
+  [key: string]: string;
+};
+
 export function activate(context: vscode.ExtensionContext) {
   const pareoViewProvider = new PareoViewProvider();
   context.subscriptions.push(
@@ -11,17 +15,23 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 class PareoViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = 'pareoMotivator';
-  public readonly imageSrc:Object = {
-    'idle': '<div class="tenor-gif-embed" data-postid="25561754" data-share-method="host" data-aspect-ratio="1.29555" data-width="100%"><a href="https://tenor.com/view/pareo-bandor%C4%B1-bang-dream-gif-25561754">Pareo Bandorı GIF</a>from <a href="https://tenor.com/search/pareo-gifs">Pareo GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>',
-    'working': '<div class="tenor-gif-embed" data-postid="18252669" data-share-method="host" data-aspect-ratio="1.77778" data-width="100%"><a href="https://tenor.com/view/bangdream-bandori-garupapico-anime-pareo-gif-18252669">Bangdream Bandori GIF</a>from <a href="https://tenor.com/search/bangdream-gifs">Bangdream GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>',
-    'rest': '<div class="tenor-gif-embed" data-postid="23805459" data-share-method="host" data-aspect-ratio="1.79775" data-width="100%"><a href="https://tenor.com/view/bang-dream-bandori-garupa-pico-garupa-pico-fever-anime-gif-23805459">Bang Dream Bandori GIF</a>from <a href="https://tenor.com/search/bang+dream-gifs">Bang Dream GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>'
-  };
+  public static readonly viewType: string = 'pareoMotivator';
+  public readonly imageSrc: ImageSource;
+  public imageKey:string;
+  public restCounter:number;
+  private _view: vscode.WebviewView;
 
-  public imageKey = 'idle';
-  public restCounter = 0;
+  constructor() {
+    this.imageSrc = {
+      normal: 'https://media.tenor.com/nrLeNeQqSacAAAAC/bandori-pareo.gif',
+      working: 'https://i.bandori.party/u/activities/wMlPo9iAewyLQrBPZFVdnWui70jf74.gif',
+      rest: 'https://media.tenor.com/Ea1tc2l5DcYAAAAC/bang-dream-bandori.gif'
+    };
 
-  private _view?: vscode.WebviewView;
+    this.imageKey = 'idle';
+    this.restCounter = 0;
+  }
+  
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -54,13 +64,13 @@ class PareoViewProvider implements vscode.WebviewViewProvider {
         <title>PareoMotivator</title>
       </head>
       <body>
-        ${imageSrc}
+        <img src="${imageSrc}" />
       </body>
       </html>`;
   }
 
   private _selectImageSrc(imageKey: string):string {
-    return this.imageSrc[imageKey as keyof typeof this.imageSrc];
+    return this.imageSrc[imageKey];
   }
 
   private _changeKey() {

@@ -22,6 +22,31 @@
           "name": "PareoMotivator"
         }
       ]
+    },
+    "configuration": {
+      "title": "Pareo Motivator Configuration",
+      "properties": {
+        "git.alwaysSignOff": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": false,
+          "description": "%config.alwaysSignOff%"
+        },
+        "git.ignoredRepositories": {
+          "type": "array",
+          "default": [],
+          "scope": "window",
+          "description": "%config.ignoredRepositories%"
+        },
+        "git.autofetch": {
+          "type": ["boolean", "string"],
+          "enum": [true, false, "all"],
+          "scope": "resource",
+          "markdownDescription": "%config.autofetch%",
+          "default": false,
+          "tags": ["usesOnlineServices"]
+        }
+      }
     }
 	},
 	"scripts": {
