@@ -19,32 +19,30 @@
         {
           "type": "webview",
           "id": "pareoMotivator",
-          "name": "PareoMotivator"
+          "name": "Pareo Motivator"
         }
       ]
     },
     "configuration": {
-      "title": "Pareo Motivator Configuration",
+      "title": "PareoMotivator",
       "properties": {
-        "git.alwaysSignOff": {
-          "type": "boolean",
+        "PareoMotivator.idleImage": {
+          "type": "string",
           "scope": "resource",
-          "default": false,
-          "description": "%config.alwaysSignOff%"
+          "default": "https://64.media.tumblr.com/b2329f2b0a4bc1d5a194efeb795a4aec/c5a153b1d4abf17a-87/s1280x1920/1699c52e4967a36e1b5fd95e43453b69839b02b6.gifv",
+          "description": "Image when you are not working."
         },
-        "git.ignoredRepositories": {
-          "type": "array",
-          "default": [],
-          "scope": "window",
-          "description": "%config.ignoredRepositories%"
-        },
-        "git.autofetch": {
-          "type": ["boolean", "string"],
-          "enum": [true, false, "all"],
+        "PareoMotivator.workingImage": {
+          "type": "string",
           "scope": "resource",
-          "markdownDescription": "%config.autofetch%",
-          "default": false,
-          "tags": ["usesOnlineServices"]
+          "default": "https://i.bandori.party/u/activities/wMlPo9iAewyLQrBPZFVdnWui70jf74.gif",
+          "description": "Image when you are working."
+        },
+        "PareoMotivator.restImage": {
+          "type": "string",
+          "scope": "resource",
+          "default": "https://media.tenor.com/Ea1tc2l5DcYAAAAC/bang-dream-bandori.gif",
+          "description": "Image when you are resting."
         }
       }
     }

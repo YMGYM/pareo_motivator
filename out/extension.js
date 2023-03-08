@@ -9,13 +9,14 @@ function activate(context) {
 exports.activate = activate;
 class PareoViewProvider {
     constructor() {
-        this.imageSrc = {
-            normal: 'https://media.tenor.com/nrLeNeQqSacAAAAC/bandori-pareo.gif',
-            working: 'https://i.bandori.party/u/activities/wMlPo9iAewyLQrBPZFVdnWui70jf74.gif',
-            rest: 'https://media.tenor.com/Ea1tc2l5DcYAAAAC/bang-dream-bandori.gif'
-        };
         this.imageKey = 'idle';
         this.restCounter = 0;
+        this._configs = vscode.workspace.getConfiguration('PareoMotivator');
+        this.imageSrc = {
+            idle: this._configs.get('idleImage'),
+            working: this._configs.get('workingImage'),
+            rest: this._configs.get('restImage'),
+        };
     }
     resolveWebviewView(webviewView, context, token) {
         this._view = webviewView;
@@ -28,6 +29,7 @@ class PareoViewProvider {
         vscode.workspace.onDidChangeTextDocument((e) => {
             this.restCounter = 0;
         });
+        // TODO: 소멸자 추가
     }
     _getHtmlForWebview(imageSrc) {
         return `
@@ -48,7 +50,6 @@ class PareoViewProvider {
     }
     _changeKey() {
         this.restCounter += 1;
-        console.log(this.restCounter);
         if (this.restCounter >= 60) {
             // when user rest more then 300 seconds, change image to idle
             this.imageKey = 'idle';

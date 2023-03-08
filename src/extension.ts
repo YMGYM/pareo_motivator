@@ -19,20 +19,21 @@ class PareoViewProvider implements vscode.WebviewViewProvider {
   public readonly imageSrc: ImageSource;
   public imageKey:string;
   public restCounter:number;
-  private _view: vscode.WebviewView;
+  private _configs: vscode.WorkspaceConfiguration;
+  private _view?: vscode.WebviewView;
 
   constructor() {
-    this.imageSrc = {
-      normal: 'https://media.tenor.com/nrLeNeQqSacAAAAC/bandori-pareo.gif',
-      working: 'https://i.bandori.party/u/activities/wMlPo9iAewyLQrBPZFVdnWui70jf74.gif',
-      rest: 'https://media.tenor.com/Ea1tc2l5DcYAAAAC/bang-dream-bandori.gif'
-    };
-
+    
     this.imageKey = 'idle';
     this.restCounter = 0;
+    this._configs = vscode.workspace.getConfiguration('PareoMotivator');
+    this.imageSrc = {
+      idle: this._configs.get('idleImage') as string,
+      working: this._configs.get('workingImage') as string,
+      rest: this._configs.get('restImage') as string,
+    };
   }
   
-
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
     context: vscode.WebviewViewResolveContext,
@@ -51,7 +52,7 @@ class PareoViewProvider implements vscode.WebviewViewProvider {
     vscode.workspace.onDidChangeTextDocument((e) => {
       this.restCounter = 0;
     });
-
+    // TODO: 소멸자 추가
   }
 
   private _getHtmlForWebview(imageSrc: string) {
@@ -75,7 +76,6 @@ class PareoViewProvider implements vscode.WebviewViewProvider {
 
   private _changeKey() {
     this.restCounter += 1;
-    console.log(this.restCounter);
     if (this.restCounter >= 60) {
       // when user rest more then 300 seconds, change image to idle
       this.imageKey = 'idle';
